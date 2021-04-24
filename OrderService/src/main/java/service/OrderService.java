@@ -61,7 +61,7 @@ public class OrderService {
 
 			JsonObject OrderObject = new JsonParser().parse(orderData).getAsJsonObject();
 
-			String itemId = OrderObject.get("itemId").getAsString();
+			String itemId = OrderObject.get("ItemID").getAsString();
 	        String output = orderController.removeOrder(itemId);
 	        
 	        return output;

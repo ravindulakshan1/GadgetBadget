@@ -59,7 +59,7 @@ public class OrderController {
 			ResultSet rs = stmt.executeQuery(query);
 			// iterate through the rows in the result set
 			while (rs.next()) {
-											// notice the table column names here as the parameter of the rs.getString/getDouble
+											
 				String itemId = Integer.toString(rs.getInt("ItemID"));
 				String itemName = rs.getString("Iname");
 				String itemCode = rs.getString("Icode");
@@ -71,10 +71,13 @@ public class OrderController {
 				output += "<td>" + itemName + "</td>";
 				output += "<td>" + itemCode + "</td>";
 				output += "<td>" + itemPrice + "</td>";
-				output += "<td>" + itemDesc + "</td></tr>";
+				output += "<td>" + itemDesc + "</td>";
 				
 				//buttons
-				output += "<td><input name='btnUpdate' type='button' value='Update' class='btn btn-secondary'></td>";
+				output += "<td><input name='btnUpdate' type='button' value='Update' class='btn btn-secondary'></td>"
+						+ "<td><form method='post' action='order.jsp'>"
+						+ "<input name='btnRemove' type='submit' value='Remove' class='btn btn-danger'>"
+						+ "<input name='itemId' type='hidden' value'" + itemId + "'>" + "</form></td></tr>";
 			}
 
 			con.close();
@@ -100,7 +103,7 @@ public class OrderController {
 			}
 
 			// create a prepared statement
-			String query = "UPDATE order SET Iname = ?, Icode = ?,"
+			String query = "UPDATE Orders SET Iname = ?, Icode = ?,"
 					+ "Iprice = ?, Idesc = ? WHERE ItemID=?";
 
 			PreparedStatement preparedStmt = con.prepareStatement(query);
@@ -108,8 +111,9 @@ public class OrderController {
 			// binding values
 			preparedStmt.setString(1, order.getItemName());
 			preparedStmt.setString(2, order.getItemCode());
-			preparedStmt.setDouble(4, order.getItemPrice());
-			preparedStmt.setString(5, order.getItemDesc());
+			preparedStmt.setDouble(3, order.getItemPrice());
+			preparedStmt.setString(4, order.getItemDesc());
+			preparedStmt.setInt(5, order.getItemId());
 
 			// execute the statement
 			preparedStmt.execute();
@@ -134,7 +138,7 @@ public class OrderController {
 			}
 
 			// create a prepared statement
-			String query = "delete from order where itemId=?";
+			String query = "delete from Orders where ItemID=?";
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 
 			// binding values
